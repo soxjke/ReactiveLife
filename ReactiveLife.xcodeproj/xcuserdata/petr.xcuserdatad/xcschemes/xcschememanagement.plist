@@ -4,7 +4,17 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>ReactiveLife.xcscheme</key>
+		<key>CompositeTableView.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
+		<key>ReactiveNetwork.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
+		<key>ReactiveSearch.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
@@ -13,6 +23,16 @@
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>4BFFADBE1E693D90008506AB</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>4BFFADE61E693E4C008506AB</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>4BFFADFC1E693ED3008506AB</key>
 		<dict>
 			<key>primary</key>
 			<true/>

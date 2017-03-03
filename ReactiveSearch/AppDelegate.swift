@@ -1,6 +1,6 @@
 //
 //  AppDelegate.swift
-//  ReactiveLife
+//  ReactiveSearch
 //
 //  Created by petr on 3/3/17.
 //  Copyright © 2017 CocoaHeadsUkraine. All rights reserved.
