@@ -24,7 +24,8 @@ class ViewController: UIViewController {
     }
     
     private func setupBindings() {
-        searchTextField.reactive.continuousTextValues.skipNil().observeValues { [weak self] (string) in
+        searchTextField.reactive.continuousTextValues.skipNil()
+            .debounce(1, on: QueueScheduler()).observeValues { [weak self] (string) in
             self?.geocoder.geocodeAddressString(string) { (placemarks, error) in
                 DispatchQueue.main.async { [weak self] in
                     self?.placemarks = placemarks
