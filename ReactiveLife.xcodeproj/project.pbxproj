@@ -646,10 +646,10 @@
 			baseConfigurationReference = C07C59739848A7E0C15C30D1 /* Pods-ReactiveSearch.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				INFOPLIST_FILE = ReactiveLife/Info.plist;
+				INFOPLIST_FILE = ReactiveSearch/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = org.cocoaheads.ReactiveLife;
+				PRODUCT_BUNDLE_IDENTIFIER = org.cocoaheads.ReactiveSearch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -660,10 +660,10 @@
 			baseConfigurationReference = BA0B2110AA5082C948DFB509 /* Pods-ReactiveSearch.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				INFOPLIST_FILE = ReactiveLife/Info.plist;
+				INFOPLIST_FILE = ReactiveSearch/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = org.cocoaheads.ReactiveLife;
+				PRODUCT_BUNDLE_IDENTIFIER = org.cocoaheads.ReactiveSearch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
