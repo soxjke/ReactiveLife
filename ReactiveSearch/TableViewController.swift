@@ -17,11 +17,11 @@ final class TableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         if (indexPath.row == 0) {
-            let action: Action<(String, CLGeocoder), [CLPlacemark], NSError> = Action({ (address, geocoder) -> SignalProducer<[CLPlacemark], NSError> in
-                return SignalProducer<[CLPlacemark], NSError>({ (observer, disposable) in
-                    geocoder.geocodeAddressString(address) { (placemarks, error) in
-                        if let placemarks = placemarks {
-                            observer.send(value: placemarks)
+            let action: Action<(String, SearchProvider), [SearchResult], NSError> = Action({ (searchTerm, provider) -> SignalProducer<[SearchResult], NSError> in
+                return SignalProducer<[SearchResult], NSError>({ (observer, disposable) in
+                    provider.search(string: searchTerm) { (results, error) in
+                        if let results = results {
+                            observer.send(value: results)
                         }
                         if let error = error {
                             observer.send(error: error as NSError)
@@ -32,6 +32,7 @@ final class TableViewController: UITableViewController {
             })
             let viewController = self.storyboard?.instantiateViewController(withIdentifier: "ViewController") as! ViewController
             viewController.action = action
+            viewController.provider = geocoder
             self.navigationController?.pushViewController(viewController, animated: true)
         }
         else if (indexPath.row == 1) {

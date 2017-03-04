@@ -14,10 +14,10 @@ import Result
 
 class ViewController: UIViewController {
 
-    public var action : Action<(String, CLGeocoder), [CLPlacemark], NSError>? = nil
+    public var action : Action<(String, SearchProvider), [SearchResult], NSError>? = nil
+    public var provider: SearchProvider? = nil
     
-    private let geocoder: CLGeocoder = CLGeocoder()
-    fileprivate var placemarks: MutableProperty<[CLPlacemark]> = MutableProperty<[CLPlacemark]>([])
+    fileprivate var searchResults: MutableProperty<[SearchResult]> = MutableProperty<[SearchResult]>([])
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchTextField: UITextField!
@@ -28,11 +28,11 @@ class ViewController: UIViewController {
     }
     
     private func setupBindings() {
-        placemarks <~
+        searchResults <~
         searchTextField.reactive.continuousTextValues
             .skipNil()
             .debounce(1, on: QueueScheduler())
-            .map { [geocoder] (address) -> (String, CLGeocoder) in return (address, geocoder) }
+            .map { [provider] (address) -> (String, SearchProvider) in return (address, provider!) }
             .map(action!.apply)
             .flatten(.latest)
             .skipError()
@@ -51,27 +51,13 @@ extension ViewController: UITableViewDataSource {
         return 1
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return placemarks.value.count
+        return searchResults.value.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCell(withIdentifier: "MyCell")
         cell = cell ?? UITableViewCell(style: .default, reuseIdentifier: "MyCell")
-        cell?.imageView?.image = UIImage(named: "icLocation")
-        cell?.textLabel?.text = placemarks.value[indexPath.row].formattedAddress
+        cell?.imageView?.image = searchResults.value[indexPath.row].image
+        cell?.textLabel?.text = searchResults.value[indexPath.row].title
         return cell!
-    }
-}
-
-extension ViewController: UITableViewDelegate {}
-
-extension CLPlacemark {
-    var formattedAddress : String {
-        get {
-            var result = ""
-            cast(addressDictionary?["FormattedAddressLines"]) { (addressLines: NSArray) in
-                result = addressLines.componentsJoined(by: ", ")
-            }
-            return result
-        }
     }
 }
