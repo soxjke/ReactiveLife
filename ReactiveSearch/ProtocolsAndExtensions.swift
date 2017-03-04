@@ -10,6 +10,7 @@ import UIKit
 import ReactiveSwift
 import Result
 import CoreLocation
+import Alamofire
 
 protocol SearchResult {
     var image: UIImage { get }
@@ -48,8 +49,18 @@ extension CLGeocoder: SearchProvider {
 
 class GithubSearcher: SearchProvider {
     func search(string: String, completion: @escaping ([SearchResult]?, NSError?) -> ()) {
-//        self.geocodeAddressString(string) { (placemarks, error) in
-//            completion(placemarks ?? [], error as NSError)
-//        }
+        Alamofire.request(URL(string: "https://api.github.com/search/users?q=\(string)")!).responseJSON { (response) in
+            cast(response.result.value) { (dictionary: [String : Any]) in
+                var searchResults: [SearchResult] = []
+                cast(dictionary["items"]) { (items: [[String : Any]]) in
+                    searchResults = items.map { (item) -> SearchResult in
+                        let searchResult = GithubSearchResult()
+                        searchResult.title = (item["login"] as? String) ?? ""
+                        return searchResult
+                    }
+                }
+                completion(searchResults, response.error as? NSError)
+            }
+        }
     }
 }

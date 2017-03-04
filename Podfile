@@ -7,6 +7,7 @@ def pods
 	pod 'ReactiveCocoa', '5.0.1'
 	# pod 'ReactiveObjC'	
 	pod 'SnapKit', '3.2.0'
+    pod 'Alamofire'
 end
 
 app_targets = ['ReactiveSearch', 'ReactiveNetwork', 'CompositeTableView']
