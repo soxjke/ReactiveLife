@@ -10,11 +10,12 @@ import UIKit
 import CoreLocation
 import ReactiveCocoa
 import ReactiveSwift
+import Result
 
 class ViewController: UIViewController {
 
     private let geocoder: CLGeocoder = CLGeocoder()
-    fileprivate var placemarks: [CLPlacemark]? = nil
+    fileprivate var placemarks: MutableProperty<[CLPlacemark]> = MutableProperty<[CLPlacemark]>([])
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchTextField: UITextField!
     
@@ -24,15 +25,31 @@ class ViewController: UIViewController {
     }
     
     private func setupBindings() {
-        searchTextField.reactive.continuousTextValues.skipNil()
-            .debounce(1, on: QueueScheduler()).observeValues { [weak self] (string) in
-            self?.geocoder.geocodeAddressString(string) { (placemarks, error) in
-                DispatchQueue.main.async { [weak self] in
-                    self?.placemarks = placemarks
-                    self?.tableView.reloadData()
+        let geocoding = Action<String, [CLPlacemark], NSError>({ (address) -> SignalProducer<[CLPlacemark], NSError> in
+            return SignalProducer<[CLPlacemark], NSError>({ (observer, disposable) in
+                self.geocoder.geocodeAddressString(address) { (placemarks, error) in
+                    if let placemarks = placemarks {
+                        observer.send(value: placemarks)
+                    }
+                    if let error = error {
+                        observer.send(error: error as NSError)
+                    }
+                    observer.sendCompleted()
                 }
-            }
-        }
+            })
+        })
+        
+        let signal =
+        searchTextField.reactive.continuousTextValues
+            .skipNil()
+            .debounce(1, on: QueueScheduler())
+            .map(geocoding.apply)
+            .flatten(.latest)
+            .skipError()
+        
+        placemarks <~ signal
+        
+        self.placemarks.signal.observeValues { [weak self] _ in self?.tableView.reloadSections(IndexSet(integer: 0), with: .automatic) }
     }
 }
 
@@ -41,13 +58,13 @@ extension ViewController: UITableViewDataSource {
         return 1
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return placemarks?.count ?? 0
+        return placemarks.value.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCell(withIdentifier: "MyCell")
         cell = cell ?? UITableViewCell(style: .default, reuseIdentifier: "MyCell")
         cell?.imageView?.image = UIImage(named: "icLocation")
-        cell?.textLabel?.text = placemarks?[indexPath.row].formattedAddress
+        cell?.textLabel?.text = placemarks.value[indexPath.row].formattedAddress
         return cell!
     }
 }

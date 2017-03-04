@@ -27,6 +27,7 @@
 		4BFFAE111E69435D008506AB /* SwiftShorthandFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BFFAE101E69435D008506AB /* SwiftShorthandFunctions.swift */; };
 		4BFFAE121E69435D008506AB /* SwiftShorthandFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BFFAE101E69435D008506AB /* SwiftShorthandFunctions.swift */; };
 		4BFFAE131E69435D008506AB /* SwiftShorthandFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BFFAE101E69435D008506AB /* SwiftShorthandFunctions.swift */; };
+		4BFFAE151E6AB7F2008506AB /* Signal+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BFFAE141E6AB7F2008506AB /* Signal+Extensions.swift */; };
 		772131D45B60BAA81331D118 /* Pods_CompositeTableView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED2D42240B45C46940EE2057 /* Pods_CompositeTableView.framework */; };
 		AFE7AC587681BCCEF09BF96C /* Pods_ReactiveNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E4C80E1577B8BA37E122D64 /* Pods_ReactiveNetwork.framework */; };
 /* End PBXBuildFile section */
@@ -57,6 +58,7 @@
 		4BFFAE091E693ED3008506AB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4BFFAE0B1E693ED3008506AB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4BFFAE101E69435D008506AB /* SwiftShorthandFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftShorthandFunctions.swift; sourceTree = "<group>"; };
+		4BFFAE141E6AB7F2008506AB /* Signal+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Signal+Extensions.swift"; sourceTree = "<group>"; };
 		6E4C80E1577B8BA37E122D64 /* Pods_ReactiveNetwork.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ReactiveNetwork.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D140D861BB4136FE92B2DE2 /* Pods-CompositeTableView.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CompositeTableView.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CompositeTableView/Pods-CompositeTableView.debug.xcconfig"; sourceTree = "<group>"; };
 		BA0B2110AA5082C948DFB509 /* Pods-ReactiveSearch.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactiveSearch.release.xcconfig"; path = "Pods/Target Support Files/Pods-ReactiveSearch/Pods-ReactiveSearch.release.xcconfig"; sourceTree = "<group>"; };
@@ -172,6 +174,7 @@
 			isa = PBXGroup;
 			children = (
 				4BFFAE101E69435D008506AB /* SwiftShorthandFunctions.swift */,
+				4BFFAE141E6AB7F2008506AB /* Signal+Extensions.swift */,
 			);
 			path = Sugar;
 			sourceTree = "<group>";
@@ -473,6 +476,7 @@
 				4BFFADDD1E693DEE008506AB /* AppDelegate.swift in Sources */,
 				4BFFAE111E69435D008506AB /* SwiftShorthandFunctions.swift in Sources */,
 				4BFFADE21E693DEE008506AB /* ViewController.swift in Sources */,
+				4BFFAE151E6AB7F2008506AB /* Signal+Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
