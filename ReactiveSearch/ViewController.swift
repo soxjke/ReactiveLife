@@ -14,8 +14,23 @@ import Result
 
 class ViewController: UIViewController {
 
+    private let geocoding = Action<(String, CLGeocoder), [CLPlacemark], NSError>({ (address, geocoder) -> SignalProducer<[CLPlacemark], NSError> in
+        return SignalProducer<[CLPlacemark], NSError>({ (observer, disposable) in
+            geocoder.geocodeAddressString(address) { (placemarks, error) in
+                if let placemarks = placemarks {
+                    observer.send(value: placemarks)
+                }
+                if let error = error {
+                    observer.send(error: error as NSError)
+                }
+                observer.sendCompleted()
+            }
+        })
+    })
+    
     private let geocoder: CLGeocoder = CLGeocoder()
     fileprivate var placemarks: MutableProperty<[CLPlacemark]> = MutableProperty<[CLPlacemark]>([])
+    
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchTextField: UITextField!
     
@@ -25,31 +40,21 @@ class ViewController: UIViewController {
     }
     
     private func setupBindings() {
-        let geocoding = Action<String, [CLPlacemark], NSError>({ (address) -> SignalProducer<[CLPlacemark], NSError> in
-            return SignalProducer<[CLPlacemark], NSError>({ (observer, disposable) in
-                self.geocoder.geocodeAddressString(address) { (placemarks, error) in
-                    if let placemarks = placemarks {
-                        observer.send(value: placemarks)
-                    }
-                    if let error = error {
-                        observer.send(error: error as NSError)
-                    }
-                    observer.sendCompleted()
-                }
-            })
-        })
-        
-        let signal =
+        placemarks <~
         searchTextField.reactive.continuousTextValues
             .skipNil()
             .debounce(1, on: QueueScheduler())
+            .map { [geocoder] (address) -> (String, CLGeocoder) in return (address, geocoder) }
             .map(geocoding.apply)
             .flatten(.latest)
             .skipError()
-        
-        placemarks <~ signal
-        
-        self.placemarks.signal.observeValues { [weak self] _ in self?.tableView.reloadSections(IndexSet(integer: 0), with: .automatic) }
+            .on(value: { [weak self] _ in self?.reload() })
+    }
+    
+    private func reload() {
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+        }
     }
 }
 
