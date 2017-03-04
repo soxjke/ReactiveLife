@@ -14,19 +14,7 @@ import Result
 
 class ViewController: UIViewController {
 
-    private let geocoding = Action<(String, CLGeocoder), [CLPlacemark], NSError>({ (address, geocoder) -> SignalProducer<[CLPlacemark], NSError> in
-        return SignalProducer<[CLPlacemark], NSError>({ (observer, disposable) in
-            geocoder.geocodeAddressString(address) { (placemarks, error) in
-                if let placemarks = placemarks {
-                    observer.send(value: placemarks)
-                }
-                if let error = error {
-                    observer.send(error: error as NSError)
-                }
-                observer.sendCompleted()
-            }
-        })
-    })
+    public var action : Action<(String, CLGeocoder), [CLPlacemark], NSError>? = nil
     
     private let geocoder: CLGeocoder = CLGeocoder()
     fileprivate var placemarks: MutableProperty<[CLPlacemark]> = MutableProperty<[CLPlacemark]>([])
@@ -45,7 +33,7 @@ class ViewController: UIViewController {
             .skipNil()
             .debounce(1, on: QueueScheduler())
             .map { [geocoder] (address) -> (String, CLGeocoder) in return (address, geocoder) }
-            .map(geocoding.apply)
+            .map(action!.apply)
             .flatten(.latest)
             .skipError()
             .on(value: { [weak self] _ in self?.reload() })
